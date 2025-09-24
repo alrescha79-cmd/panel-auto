@@ -1,6 +1,6 @@
-# 🚀 Script SSH/VPN Auto Setup
+# ⚡ Auto Installer Panel VPN (Xray, OVPN, SSH, SlowDNS)
 
-Automated setup script for deploying SSH/VPN services on Linux-based VPS. Simplifies the installation and configuration of various tunneling protocols such as SSH, Shadowsocks, Trojan, VLESS, and VMess.
+![Panel VPN Auto Installer: Xray | OVPN | SSH | SlowDNS](https://readme-typing-svg.demolab.com?font=Capriola&size=40&duration=4000&pause=450&color=F70069&background=FFFFAA00&center=true&random=false&width=600&height=100&lines=Panel+VPN+Auto+Installer;Xray+%7C+OVPN+%7C+SSH+%7C+SlowDNS)
 
 ## 📋 Table of Contents
 
@@ -9,10 +9,22 @@ Automated setup script for deploying SSH/VPN services on Linux-based VPS. Simpli
 - [Supported Protocols](#-supported-protocols)
 - [API Management](#-api-management)
 - [Auto Reboot Configuration](#-auto-reboot-configuration)
-<!-- - [System Requirements](#-system-requirements) -->
+- [System Requirements](#️-system-requirements)
 - [Support](#-support)
 
 ## 🚀 Installation
+
+### Change to root user
+
+```bash
+sudo -i
+```
+
+atau
+
+```bash
+sudo su
+```
 
 ### Step 1: Run the Setup Script
 
@@ -27,6 +39,7 @@ screen -S setup ./setup.sh
 ### ⚠️ Important Information
 
 - If during the installation process in [Step 1](#-installation), a disconnection occurs in the terminal, do not re-enter the installation command. Please use the command `screen -r setup` to view the ongoing process.
+- Then run the command `./setup.sh` again to continue the installation.
 - To view the installation log, check `/root/syslog.log`.
 
 ## ✨ Features
@@ -125,8 +138,12 @@ rm -rf /tmp/cron.txt
 
 ### Supported Operating Systems
 
-- Ubuntu 22.04 LTS (Jammy Jellyfish)
-- Ubuntu 24.04.3 LTS (Noble)
+![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu-20.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-22.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Ubuntu 24.04](https://img.shields.io/badge/Ubuntu-24.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Debian 10](https://img.shields.io/badge/Debian-10-A81D33?style=for-the-badge&logo=debian&logoColor=white)
+![Debian 11](https://img.shields.io/badge/Debian-11-A81D33?style=for-the-badge&logo=debian&logoColor=white)
+![Other Distros](https://img.shields.io/badge/Other-Distros-4D4D4D?style=for-the-badge&logo=linux&logoColor=white)
 
 ### Required Packages
 
@@ -142,4 +159,15 @@ rm -rf /tmp/cron.txt
 
 For support and bug reporting, please contact:
 
-- Telegram: [@Alrescha79](https://t.me/Alrescha79)
+[![Telegram: Click Here](https://img.shields.io/badge/Telegram-Click%20Here-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/Alrescha79)
+[![Email: Click Here](https://img.shields.io/badge/Email-Click%20Here-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:anggun@cakson.my.id)
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+Copyright © 2025 [Alrescha79](https://github.com/alrescha79-cmd). All rights reserved.
+
+---

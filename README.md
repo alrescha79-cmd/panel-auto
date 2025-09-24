@@ -25,7 +25,11 @@ Tujuan dari installer ini adalah untuk mempermudah pemasangan server VPN secara 
 ## 🖥️ Support OS
 
 ![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu-20.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-22.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Ubuntu 24.04](https://img.shields.io/badge/Ubuntu-24.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![Debian 10](https://img.shields.io/badge/Debian-10-A81D33?style=for-the-badge&logo=debian&logoColor=white)
+![Debian 11](https://img.shields.io/badge/Debian-11-A81D33?style=for-the-badge&logo=debian&logoColor=white)
+![Other Distros](https://img.shields.io/badge/Other-Distros-4D4D4D?style=for-the-badge&logo=linux&logoColor=white)
 
 ## 📑 Dokumentasi
 
@@ -38,7 +42,6 @@ Tujuan dari installer ini adalah untuk mempermudah pemasangan server VPN secara 
 ## 👤 Author & Kontak
 
 [![Telegram: Click Here](https://img.shields.io/badge/Telegram-Click%20Here-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/Alrescha79)
-[![Whatsapp: Click Here](https://img.shields.io/badge/Whatsapp-Click%20Here-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/62811281317)
 [![Email: Click Here](https://img.shields.io/badge/Email-Click%20Here-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:anggun@cakson.my.id)
 
 ---
