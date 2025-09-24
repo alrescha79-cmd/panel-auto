@@ -19,7 +19,7 @@ Automated setup script for deploying SSH/VPN services on Linux-based VPS. Simpli
 ```bash
 apt-get update && \
 apt-get --reinstall --fix-missing install -y whois bzip2 gzip coreutils wget screen nscd && \
-wget --inet4-only --no-check-certificate -O setup.sh https://raw.githubusercontent.com/alresch79-cmd/panel-auto/refs/heads/main/setup.sh && \
+wget --inet4-only --no-check-certificate -O setup.sh https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/setup.sh && \
 chmod +x setup.sh && \
 screen -S setup ./setup.sh
 ```
@@ -57,7 +57,7 @@ The project includes a Go-based REST API for managing VPN accounts:
 ### Installation
 
 ```bash
-wget https://raw.githubusercontent.com/alresch79-cmd/panel-auto/refs/heads/main/golang/rest-go.sh
+wget https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/golang/rest-go.sh
 chmod +x rest-go.sh
 bash rest-go.sh
 ```
