@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load Telegram configuration
+source '/root/.vars'
+
 # Valid Script
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
@@ -15,6 +18,17 @@ city=$(cat /etc/xray/city 2>/dev/null || echo "Unknown city")
 pubkey=$(cat /etc/slowdns/server.pub 2>/dev/null || echo "Pubkey not available")
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 # uuid=$(cat /proc/sys/kernel/random/uuid)
+
+# Function to send Telegram notification
+send_telegram_notification() {
+    local message="$1"
+    if [[ -n "$bot_token" && -n "$telegram_id" ]]; then
+        curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
+            -d chat_id="$telegram_id" \
+            -d text="$message" \
+            -d parse_mode="HTML" > /dev/null 2>&1
+    fi
+}
 
 echo -e "————————————————————————————————————————————————————"
 echo -e "             Add Xray Vless Account"
@@ -246,7 +260,37 @@ fi
 # Add new entry
 echo "### ${user} ${exp} ${uuid}" >>"$db_file"
 
-
+# Send Telegram notification
+success_message="
+<b>—————————————————————————————————————</b>
+<b>    Xray/Vless Account    </b>
+<b>—————————————————————————————————————</b>
+<b>Description  :</b> <code>${user}</code>
+<b>Host Server  :</b> <code>${domain}</code>
+<b>Location     :</b> <code>${city}</code>
+<b>Port TLS     :</b> <code>443</code>
+<b>Port non TLS :</b> <code>80, 8080</code>
+<b>Port DNS     :</b> <code>443, 53</code>
+<b>Port GRPC    :</b> <code>443</code>
+<b>Security     :</b> <code>auto</code>
+<b>Network      :</b> <code>WS or gRPC</code>
+<b>Path         :</b> <code>/whatever/vless</code>
+<b>ServiceName  :</b> <code>vless-grpc</code>
+<b>User ID      :</b> <code>${uuid}</code>
+<b>Public Key   :</b> <code>${pubkey}</code>
+<b>—————————————————————————————————————</b>
+<b>TLS Link     :</b> <code>${vless_tls}</code>
+<b>—————————————————————————————————————</b>
+<b>NTLS Link    :</b> <code>${vless_non}</code>
+<b>—————————————————————————————————————</b>
+<b>GRPC Link    :</b> <code>${vless_grpc}</code>
+<b>—————————————————————————————————————</b>
+<b>OpenClash Format :</b> <code>https://${domain}:81/vless-${user}.txt</code>
+<b>—————————————————————————————————————</b>
+<b>Expires On   :</b> <code>${exp}</code>
+<b>—————————————————————————————————————</b>
+"
+send_telegram_notification "$success_message"
 
 # Save log
 {

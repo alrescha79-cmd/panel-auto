@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load Telegram configuration
+source '/root/.vars'
+
 # Valid Script
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
@@ -16,6 +19,17 @@ purple="\e[95m"
 cyan="\e[96m"
 white="\e[97m"
 reset="\e[0m"
+
+# Function to send Telegram notification
+send_telegram_notification() {
+    local message="$1"
+    if [[ -n "$bot_token" && -n "$telegram_id" ]]; then
+        curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
+            -d chat_id="$telegram_id" \
+            -d text="$message" \
+            -d parse_mode="HTML" > /dev/null 2>&1
+    fi
+}
 
 # Function to print rainbow text
 print_rainbow() {
@@ -70,7 +84,7 @@ clear
 
 # User data input
 print_rainbow "┌─────────────────────────────────────────┐"
-print_rainbow "│        Script by XTRIMER-TUNNEL         │"
+print_rainbow "│        Script by Alrescha79        │"
 print_rainbow "│     Input SSH trial account data        │"
 print_rainbow "│            Enter User Data              │"
 print_rainbow "└─────────────────────────────────────────┘"
@@ -126,6 +140,44 @@ print_rainbow "─────────────────────�
 echo -e "Save Account Link: https://$domain:81/ssh-$user.txt"
 print_rainbow "───────────────────────────"
 echo -e "Expiration       : $expiration"
+
+# Send Telegram notification for trial SSH account
+trial_message="
+<b>🎯 TRIAL SSH/OVPN ACCOUNT</b>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>📋 Trial Account Details:</b>
+<b>👤 Username :</b> <code>$user</code>
+<b>🔐 Password :</b> <code>$user</code>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>🌐 IP :</b> <code>$ip</code>
+<b>🏠 Host :</b> <code>$domain</code>
+<b>🐌 Slowdns Host :</b> <code>$ns_domain</code>
+<b>📍 Location :</b> <code>$city</code>
+<b>🔌 OpenSSH Port :</b> <code>443, 80, 22</code>
+<b>🔌 UdpSSH Port :</b> <code>1-65535</code>
+<b>🔌 DNS Port :</b> <code>443, 53, 22</code>
+<b>🔌 Dropbear Port :</b> <code>443, 109</code>
+<b>🔌 SSH WS Port :</b> <code>80, 8080</code>
+<b>🔌 SSH SSL WS Port :</b> <code>443</code>
+<b>🔌 SSL/TLS Port :</b> <code>443</code>
+<b>🔌 OVPN SSL Port :</b> <code>443</code>
+<b>🔌 OVPN TCP Port :</b> <code>1194</code>
+<b>🔌 OVPN UDP Port :</b> <code>2200</code>
+<b>🔌 BadVPN UDP :</b> <code>7100, 7300, 7300</code>
+<b>🔑 SlowDns Public Key :</b> <code>$public_key</code>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>🌐 WSS Payload :</b> <code>GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]</code>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>📁 OpenVPN Link :</b> <code>https://$domain:81/allovpn.zip</code>
+<b>💾 Save Account Link :</b> <code>https://$domain:81/ssh-$user.txt</code>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>⏰ Trial Duration :</b> <code>$duration minutes</code>
+<b>📅 Expiration :</b> <code>$expiration</code>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>🎁 STATUS :</b> <b>TRIAL ACCOUNT CREATED</b>
+"
+send_telegram_notification "$trial_message"
+
 echo -e ""
 read -n 1 -s -r -p "Press [ Enter ] to back on menu"
 menu

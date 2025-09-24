@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load Telegram configuration
+source '/root/.vars'
+
 # Valid Script
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
@@ -16,6 +19,16 @@ cyan="\e[96m"
 white="\e[97m"
 reset="\e[0m"
 
+# Function to send Telegram notification
+send_telegram_notification() {
+    local message="$1"
+    if [[ -n "$bot_token" && -n "$telegram_id" ]]; then
+        curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
+            -d chat_id="$telegram_id" \
+            -d text="$message" \
+            -d parse_mode="HTML" > /dev/null 2>&1
+    fi
+}
 
 # variables
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
@@ -109,3 +122,18 @@ echo -e "${green}│          DELETE SHADOWSOCKS ACCOUNT     │${reset}"
 echo -e "${green}└─────────────────────────────────────────┘${reset}"
 echo -e "username     : ${green}$user${reset}"
 echo -e "account has been permanently deleted"
+
+# Send Telegram notification for successful deletion
+delete_message="
+<b>🗑️ SHADOWSOCKS ACCOUNT DELETED</b>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>📋 Details:</b>
+<b>👤 Username :</b> <code>$user</code>
+<b>📅 Expiry Date :</b> <code>$exp</code>
+<b>🌐 Domain :</b> <code>$domain</code>
+<b>🕐 Deleted At :</b> <code>$(date '+%Y-%m-%d %H:%M:%S')</code>
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>✅ STATUS :</b> <b>ACCOUNT SUCCESSFULLY DELETED</b>
+<b>━━━━━━━━━━━━━━━━━━</b>
+"
+send_telegram_notification "$delete_message"

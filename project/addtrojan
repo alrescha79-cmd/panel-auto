@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load Telegram configuration
+source '/root/.vars'
+
 # Valid Script
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
@@ -15,6 +18,17 @@ city=$(cat /etc/xray/city 2>/dev/null || echo "Unknown city")
 pubkey=$(cat /etc/slowdns/server.pub 2>/dev/null || echo "Pubkey not available")
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 # uuid=$(cat /proc/sys/kernel/random/uuid)
+
+# Function to send Telegram notification
+send_telegram_notification() {
+    local message="$1"
+    if [[ -n "$bot_token" && -n "$telegram_id" ]]; then
+        curl -s -X POST "https://api.telegram.org/bot$bot_token/sendMessage" \
+            -d chat_id="$telegram_id" \
+            -d text="$message" \
+            -d parse_mode="HTML" > /dev/null 2>&1
+    fi
+}
 
 # Exception handling for missing configuration files
 if [ ! -f "/etc/xray/trojan/config.json" ]; then
@@ -242,6 +256,34 @@ mv "$temp_file" "$db_file"
 # Add new entry
 echo "### ${user} ${exp} ${uuid}" >> "$db_file"
 
+# Send Telegram notification
+success_message="
+<b>—————————————————————————————————————</b>
+<b>    Xray/Trojan Account    </b>
+<b>—————————————————————————————————————</b>
+<b>Description  :</b> <code>${user}</code>
+<b>Host Server  :</b> <code>${domain}</code>
+<b>Location     :</b> <code>${city}</code>
+<b>TLS Port     :</b> <code>443</code>
+<b>DNS Port     :</b> <code>443, 53</code>
+<b>GRPC Port    :</b> <code>443</code>
+<b>Security     :</b> <code>auto</code>
+<b>Network      :</b> <code>WS or gRPC</code>
+<b>Path         :</b> <code>/whatever/trojan-ws</code>
+<b>ServiceName  :</b> <code>trojan-grpc</code>
+<b>Password     :</b> <code>${uuid}</code>
+<b>Public Key   :</b> <code>${pubkey}</code>
+<b>—————————————————————————————————————</b>
+<b>TLS Link     :</b> <code>${trojan_tls}</code>
+<b>—————————————————————————————————————</b>
+<b>GRPC Link    :</b> <code>${trojan_grpc}</code>
+<b>—————————————————————————————————————</b>
+<b>OpenClash Format :</b> <code>https://${domain}:81/trojan-${user}.txt</code>
+<b>—————————————————————————————————————</b>
+<b>Expires On   :</b> <code>${exp}</code>
+<b>—————————————————————————————————————</b>
+"
+send_telegram_notification "$success_message"
 
 # Save log
 {

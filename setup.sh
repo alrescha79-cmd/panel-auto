@@ -118,9 +118,47 @@ isp=$(curl -s ipinfo.io/org | cut -d " " -f 2-10)
 domain=$(cat /etc/xray/domain)
 ip=$(wget -qO- ipinfo.io/ip)
 
-# Mendapatkan data izin dan key
-data=$(curl -s https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/izin)
-key=$(echo "$data" | grep "$ip" | awk '{print $2}')
+# Cek IP domain dan VPS
+vps_ip=$(curl -s ipinfo.io/ip)
+domain_ip=$(getent ahosts "$domain" | awk '{print $1}' | head -n 1)
+if [ "$domain_ip" != "$vps_ip" ]; then
+    echo -e "${red}Domain tidak terhubung ke IP VPS. Silakan hubungkan domain ke IP VPS Anda.${neutral}"
+    exit 1
+fi
+
+# Pengecekan IP izin
+echo -e "${yellow}Memeriksa izin IP...${neutral}"
+ip_current=$(curl -s ipinfo.io/ip)
+izin_data=$(curl -s https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/izin)
+
+if [ -z "$izin_data" ]; then
+    echo -e "${red}Gagal mengambil data izin dari server. Periksa koneksi internet Anda.${neutral}"
+    exit 1
+fi
+
+# Cek apakah IP ada dalam daftar izin
+ip_found=$(echo "$izin_data" | grep -w "$ip_current")
+
+if [ -z "$ip_found" ]; then
+    clear
+    echo -e "${red}╔════════════════════════════════════════════════╗${neutral}"
+    echo -e "${red}║                AKSES DITOLAK                   ║${neutral}"
+    echo -e "${red}╠════════════════════════════════════════════════╣${neutral}"
+    echo -e "${red}║ IP Anda: ${yellow}$ip_current${red}                    ║${neutral}"
+    echo -e "${red}║ IP tidak terdaftar dalam daftar izin!          ║${neutral}"
+    echo -e "${red}║                                                ║${neutral}"
+    echo -e "${red}║ Untuk mendapatkan akses, hubungi:             ║${neutral}"
+    echo -e "${red}║ ${green}Telegram: https://t.me/Alrescha79${red}            ║${neutral}"
+    echo -e "${red}║                                                ║${neutral}"
+    echo -e "${red}║ Sertakan IP VPS Anda dalam pesan!             ║${neutral}"
+    echo -e "${red}╚════════════════════════════════════════════════╝${neutral}"
+    exit 1
+fi
+
+echo -e "${green}✓ IP Anda terdaftar dan memiliki izin untuk melanjutkan.${neutral}"
+
+# Simpan domain ke file
+echo "$domain" >/etc/xray/domain
 
 # URL sumber konfigurasi dan binary
 nginx_key_url="https://nginx.org/keys/nginx_signing.key"
