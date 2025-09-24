@@ -3,12 +3,13 @@
 Automated setup script for deploying SSH/VPN services on Linux-based VPS. Simplifies the installation and configuration of various tunneling protocols such as SSH, Shadowsocks, Trojan, VLESS, and VMess.
 
 ## 📋 Table of Contents
+
 - [Installation](#-installation)
 - [Features](#-features)
 - [Supported Protocols](#-supported-protocols)
 - [API Management](#-api-management)
 - [Auto Reboot Configuration](#-auto-reboot-configuration)
-- [System Requirements](#-system-requirements)
+<!-- - [System Requirements](#-system-requirements) -->
 - [Support](#-support)
 
 ## 🚀 Installation
@@ -18,7 +19,7 @@ Automated setup script for deploying SSH/VPN services on Linux-based VPS. Simpli
 ```bash
 apt-get update && \
 apt-get --reinstall --fix-missing install -y whois bzip2 gzip coreutils wget screen nscd && \
-wget --inet4-only --no-check-certificate -O setup.sh https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/setup.sh && \
+wget --inet4-only --no-check-certificate -O setup.sh https://raw.githubusercontent.com/alresch79-cmd/panel-auto/refs/heads/main/setup.sh && \
 chmod +x setup.sh && \
 screen -S setup ./setup.sh
 ```
@@ -27,7 +28,6 @@ screen -S setup ./setup.sh
 
 - If during the installation process in [Step 1](#-installation), a disconnection occurs in the terminal, do not re-enter the installation command. Please use the command `screen -r setup` to view the ongoing process.
 - To view the installation log, check `/root/syslog.log`.
-- Report bugs to the [hidessh Telegram account](https://t.me/hidessh).
 
 ## ✨ Features
 
@@ -57,7 +57,7 @@ The project includes a Go-based REST API for managing VPN accounts:
 ### Installation
 
 ```bash
-wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/golang/rest-go.sh
+wget https://raw.githubusercontent.com/alresch79-cmd/panel-auto/refs/heads/main/golang/rest-go.sh
 chmod +x rest-go.sh
 bash rest-go.sh
 ```
@@ -66,28 +66,32 @@ bash rest-go.sh
 
 The [package-gohide.sh](package-gohide.sh) script installs essential command-line tools for account management:
 
-#### Account Creation Commands:
+#### Account Creation Commands
+
 - `/usr/local/bin/add-vmess` - Create VMess accounts
 - `/usr/local/bin/add-vless` - Create VLESS accounts
 - `/usr/local/bin/add-trojan` - Create Trojan accounts
 - `/usr/local/bin/add-shadowsocks` - Create Shadowsocks accounts
 - `/usr/local/bin/add-ssh` - Create SSH accounts
 
-#### Account Deletion Commands:
+#### Account Deletion Commands
+
 - `/usr/local/bin/del-vmess` - Delete VMess accounts
 - `/usr/local/bin/del-trojan` - Delete Trojan accounts
 - `/usr/local/bin/del-vless` - Delete VLESS accounts
 - `/usr/local/bin/del-shadowsocks` - Delete Shadowsocks accounts
 - `/usr/local/bin/del-ssh` - Delete SSH accounts
 
-#### Account Check Commands:
+#### Account Check Commands
+
 - `/usr/local/bin/check-vless` - Check VLESS account status
 - `/usr/local/bin/check-trojan` - Check Trojan account status
 - `/usr/local/bin/check-shadowsocks` - Check Shadowsocks account status
 - `/usr/local/bin/check-ssh` - Check SSH account status
 - `/usr/local/bin/check-vmess` - Check VMess account status
 
-#### Account Renewal Commands:
+#### Account Renewal Commands
+
 - `/usr/local/bin/renew-vmess` - Renew VMess accounts
 - `/usr/local/bin/renew-ssh` - Renew SSH accounts
 - `/usr/local/bin/renew-vless` - Renew VLESS accounts
@@ -108,7 +112,7 @@ rm -rf /tmp/cron.txt
 
 The above command will install an auto-reboot every day at 04:00.
 
-### To Cancel Auto Reboot:
+### To Cancel Auto Reboot
 
 ```bash
 crontab -l > /tmp/cron.txt
@@ -119,11 +123,13 @@ rm -rf /tmp/cron.txt
 
 ## 🖥️ System Requirements
 
-### Supported Operating Systems:
+### Supported Operating Systems
+
 - Ubuntu 22.04 LTS (Jammy Jellyfish)
 - Ubuntu 24.04.3 LTS (Noble)
 
-### Required Packages:
+### Required Packages
+
 - whois
 - bzip2
 - gzip
@@ -135,17 +141,5 @@ rm -rf /tmp/cron.txt
 ## 🆘 Support
 
 For support and bug reporting, please contact:
-- Telegram: [@hidessh](https://t.me/hidessh)
 
-### Project Structure:
-```
-scAUTO/
-├── bot/                 # Node.js bot for trial account management
-├── fodder/              # Configuration files and utilities
-├── golang/              # Go-based REST API for account management
-├── project/             # Core automation scripts
-├── setup.sh             # Main installation script
-├── menu.sh              # User interface for managing services
-├── package-gohide.sh    # Package installation script
-└── bbr.sh               # BBR congestion control setup
-```
+- Telegram: [@Alrescha79](https://t.me/Alrescha79)
