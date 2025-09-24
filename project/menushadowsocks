@@ -5,6 +5,75 @@ ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
+# ===============================
+# PENGECEKAN IZIN IP DAN MASA AKTIF
+# ===============================
+MYIP=$ipsaya
+
+# URL izin
+url_izin="https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/izin"
+
+# Cek apakah IP ada dalam daftar izin
+echo "Memeriksa izin IP..."
+izin_data=$(curl -sS $url_izin 2>/dev/null)
+
+if [ -z "$izin_data" ]; then
+    clear
+    echo -e "\e[38;5;196m╔════════════════════════════════════════════════╗\e[0m"
+    echo -e "\e[38;5;196m║                KONEKSI ERROR                   ║\e[0m"
+    echo -e "\e[38;5;196m╠════════════════════════════════════════════════╣\e[0m"
+    echo -e "\e[38;5;196m║ Gagal mengambil data izin dari server          ║\e[0m"
+    echo -e "\e[38;5;196m║ Periksa koneksi internet Anda                 ║\e[0m"
+    echo -e "\e[38;5;196m║                                                ║\e[0m"
+    echo -e "\e[38;5;196m║ Hubungi: \e[38;5;87mhttps://t.me/Alrescha79\e[38;5;196m            ║\e[0m"
+    echo -e "\e[38;5;196m╚════════════════════════════════════════════════╝\e[0m"
+    exit 1
+fi
+
+# Cek apakah IP ada dalam daftar
+ip_found=$(echo "$izin_data" | grep -w "$MYIP")
+
+if [ -z "$ip_found" ]; then
+    clear
+    echo -e "\e[38;5;196m╔════════════════════════════════════════════════╗\e[0m"
+    echo -e "\e[38;5;196m║                AKSES DITOLAK                   ║\e[0m"
+    echo -e "\e[38;5;196m╠════════════════════════════════════════════════╣\e[0m"
+    echo -e "\e[38;5;196m║ IP Anda: \e[38;5;226m$MYIP\e[38;5;196m                    ║\e[0m"
+    echo -e "\e[38;5;196m║ IP tidak terdaftar dalam daftar izin!          ║\e[0m"
+    echo -e "\e[38;5;196m║                                                ║\e[0m"
+    echo -e "\e[38;5;196m║ Untuk mendapatkan akses, hubungi:             ║\e[0m"
+    echo -e "\e[38;5;196m║ \e[38;5;87mTelegram: https://t.me/Alrescha79\e[38;5;196m            ║\e[0m"
+    echo -e "\e[38;5;196m║                                                ║\e[0m"
+    echo -e "\e[38;5;196m║ Sertakan IP VPS Anda dalam pesan!             ║\e[0m"
+    echo -e "\e[38;5;196m╚════════════════════════════════════════════════╝\e[0m"
+    exit 1
+fi
+
+# Ambil data username dan valid dari hasil grep
+username=$(echo "$ip_found" | awk '{print $2}')
+valid=$(echo "$ip_found" | awk '{print $3}')
+
+# CEK MASA AKTIF SCRIPT
+today=$(date +'%Y-%m-%d')
+if [[ "$today" > "$valid" ]]; then
+    clear
+    echo -e "\e[38;5;196m╔════════════════════════════════════════════════╗\e[0m"
+    echo -e "\e[38;5;196m║              SCRIPT KADALUARSA                 ║\e[0m"
+    echo -e "\e[38;5;196m╠════════════════════════════════════════════════╣\e[0m"
+    echo -e "\e[38;5;196m║ Script sudah habis masa aktifnya!             ║\e[0m"
+    echo -e "\e[38;5;196m║                                                ║\e[0m"
+    echo -e "\e[38;5;196m║ Tanggal expired: \e[38;5;226m$(date -d "$valid" +'%d-%m-%Y')\e[38;5;196m             ║\e[0m"
+    echo -e "\e[38;5;196m║ Tanggal hari ini: \e[38;5;226m$(date +'%d-%m-%Y')\e[38;5;196m            ║\e[0m"
+    echo -e "\e[38;5;196m║                                                ║\e[0m"
+    echo -e "\e[38;5;196m║ Untuk perpanjangan masa aktif, hubungi:       ║\e[0m"
+    echo -e "\e[38;5;196m║ \e[38;5;87mTelegram: https://t.me/Alrescha79\e[38;5;196m            ║\e[0m"
+    echo -e "\e[38;5;196m║                                                ║\e[0m"
+    echo -e "\e[38;5;196m║ Username: \e[38;5;87m$username\e[38;5;196m                           ║\e[0m"
+    echo -e "\e[38;5;196m║ IP VPS: \e[38;5;87m$MYIP\e[38;5;196m                        ║\e[0m"
+    echo -e "\e[38;5;196m╚════════════════════════════════════════════════╝\e[0m"
+    exit 1
+fi
+
         # Variables
         green="\e[38;5;87m"
         red="\e[38;5;196m"
