@@ -105,6 +105,31 @@ Tidak aktif default. Lihat [Konfigurasi Auto Reboot](./install.md#-konfigurasi-a
 
 ---
 
+## ♻️ Hapus Instalasi
+
+### Langkah Cepat
+
+```bash
+wget -O uninstall.sh https://raw.githubusercontent.com/<owner>/<repo>/main/uninstall.sh
+chmod +x uninstall.sh
+sudo ./uninstall.sh
+```
+
+Saat diminta konfirmasi, ketik:
+```
+YES
+```
+
+### Menjalankan dengan Mode Debug
+Jika ingin melihat perintah yang dieksekusi:
+```bash
+bash -x ./uninstall.sh
+```
+
+Atau lihat panduan lengkap [Hapus Instalasi](./uninstall.md).
+
+---
+
 ## 🆘 Dukungan
 
 | Kanal | Link |
