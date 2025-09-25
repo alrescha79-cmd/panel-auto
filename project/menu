@@ -250,9 +250,9 @@ echo -e "   ${orange}└──────────────────�
             echo -e "   ${orange}│ ${green}[3]${neutral} SERVICE VLESS    ${green}[7]${neutral} BOT TELEGRAM     ${orange}│${neutral}"
             echo -e "   ${orange}│ ${green}[4]${neutral} SERVICE TROJAN   ${green}[8]${neutral} MENU FEATURES    ${orange}│${neutral}"
             echo -e "   ${orange}└───────────────────────────────────────────┘${neutral}"            
-            echo -e "             ${green}SCRIPT VERSION: V4.0.11 LTS${neutral}"
-            echo -e "             ${green}DEVELOPER   : Alrescha79${neutral}"
-            echo -e "             ${green}CONTACT     : https://t.me/Alrescha79${neutral}"
+            echo -e "       ${green}SC VERSION : V4.0.11 LTS${neutral}"
+            echo -e "       ${green}DEVELOPER  : Alrescha79${neutral}"
+            echo -e "       ${green}https://t.me/Alrescha79${neutral}"
             echo -e "                ${orange}───${green}───${yellow}───${blue}───${purple}───${red}───${neutral}"
             echo -e ""
 read -p "Pick a number (1-8) or hit 'x' to bail: " choice
