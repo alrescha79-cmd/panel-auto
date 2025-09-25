@@ -201,7 +201,7 @@ read -n 1 -s -r -p "Press any key to return to the menu"
             # Display menu
             display_menu() {
             echo -e "   ${orange}┌───────────────────────────────────────────┐${neutral}"
-echo -e "   ${orange}│ ${dark_blue_bg}${green}           HideSSH-TUNNELING           ${neutral} ${orange}│${neutral}"
+echo -e "   ${orange}│ ${dark_blue_bg}${green}          Alrescha79 Panel Premium           ${neutral} ${orange}│${neutral}"
 echo -e "   ${orange}└───────────────────────────────────────────┘${neutral}"            
             echo -e "   ${orange}┌───────────────────────────────────────────┐${neutral}"
 
@@ -241,8 +241,8 @@ echo -e "   ${orange}└──────────────────�
             printf "\e[0m%-13s %-7s %-8s %2s\n" "            SHADOWSOCKS" " : $ss" "ACCOUNT "  
             echo -e "        ${dark_purple}└─────────────────────────────────┘${neutral}"
             echo -e "   ${orange}┌───────────────────────────────────────────┐${neutral}"
-            echo -e "   ${orange}│${red} • ${neutral}ID CLIENTS : ${neutral}$username ${sts}"            
-            echo -e "   ${orange}│${red} • ${neutral}SC EXPIRED : ${neutral}$(datediff "$Exp1" "$today")"
+            echo -e "   ${orange}│${red} • ${neutral}Nama : ${neutral}$username ${sts}"            
+            echo -e "   ${orange}│${red} • ${neutral}Masa Aktif: ${neutral}$(datediff "$Exp1" "$today")"
             echo -e "   ${orange}└───────────────────────────────────────────┘${neutral}"            
             echo -e "   ${orange}┌───────────────────────────────────────────┐${neutral}"
             echo -e "   ${orange}│ ${green}[1]${neutral} SERVICE SSH      ${green}[5]${neutral} SERVICE SHDWSCKS ${orange}│${neutral}"
@@ -250,7 +250,9 @@ echo -e "   ${orange}└──────────────────�
             echo -e "   ${orange}│ ${green}[3]${neutral} SERVICE VLESS    ${green}[7]${neutral} BOT TELEGRAM     ${orange}│${neutral}"
             echo -e "   ${orange}│ ${green}[4]${neutral} SERVICE TROJAN   ${green}[8]${neutral} MENU FEATURES    ${orange}│${neutral}"
             echo -e "   ${orange}└───────────────────────────────────────────┘${neutral}"            
-            echo -e "             ${green}SCRIPT VERSION: V3.8 LTS${neutral}"
+            echo -e "             ${green}SCRIPT VERSION: V4.0.11 LTS${neutral}"
+            echo -e "             ${green}DEVELOPER   : Alrescha79${neutral}"
+            echo -e "             ${green}CONTACT     : https://t.me/Alrescha79${neutral}"
             echo -e "                ${orange}───${green}───${yellow}───${blue}───${purple}───${red}───${neutral}"
             echo -e ""
 read -p "Pick a number (1-8) or hit 'x' to bail: " choice

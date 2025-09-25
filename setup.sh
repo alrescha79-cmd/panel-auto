@@ -667,12 +667,113 @@ else
     echo -e "${red}Failed to save iptables rules${neutral}"
 fi
 
+# ...existing code...
+
 # Install Xray
 if ! command -v xray >/dev/null 2>&1; then
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.8.7
+    echo -e "${yellow}Installing Xray...${neutral}"
+    
+    # Method 1: Try official install script with latest version
+    if ! bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data; then
+        echo -e "${yellow}Official install failed, trying alternative method...${neutral}"
+        
+        # Method 2: Manual download and install
+        XRAY_VERSION="1.8.24"  # Use latest stable version
+        ARCH=$(uname -m)
+        case $ARCH in
+            x86_64) ARCH="64" ;;
+            aarch64) ARCH="arm64-v8a" ;;
+            armv7l) ARCH="arm32-v7a" ;;
+            *) echo -e "${red}Unsupported architecture: $ARCH${neutral}"; exit 1 ;;
+        esac
+        
+        # Create temporary directory
+        TEMP_DIR=$(mktemp -d)
+        cd "$TEMP_DIR"
+        
+        # Download Xray
+        DOWNLOAD_URL="https://github.com/XTLS/Xray-core/releases/download/v${XRAY_VERSION}/Xray-linux-${ARCH}.zip"
+        if wget -O "xray.zip" "$DOWNLOAD_URL"; then
+            if unzip -q xray.zip; then
+                # Install binary
+                sudo cp xray /usr/local/bin/xray
+                sudo chmod +x /usr/local/bin/xray
+                
+                # Create user and directories
+                sudo useradd --system --no-create-home --shell /usr/sbin/nologin www-data 2>/dev/null || true
+                sudo mkdir -p /usr/local/share/xray /var/log/xray
+                sudo cp *.dat /usr/local/share/xray/ 2>/dev/null || true
+                sudo chown -R www-data:www-data /var/log/xray
+                
+                # Create systemd service
+                sudo tee /etc/systemd/system/xray.service > /dev/null <<EOF
+[Unit]
+Description=Xray Service
+Documentation=https://github.com/xtls
+After=network.target nss-lookup.target
+
+[Service]
+User=www-data
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /etc/xray/config.json
+Restart=on-failure
+RestartPreventExitStatus=23
+LimitNPROC=10000
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+                
+                sudo systemctl daemon-reload
+                echo -e "${green}Xray installed successfully via manual method${neutral}"
+            else
+                echo -e "${red}Failed to extract Xray archive${neutral}"
+                exit 1
+            fi
+        else
+            echo -e "${red}Failed to download Xray from GitHub releases${neutral}"
+            
+            # Method 3: Try alternative mirror
+            echo -e "${yellow}Trying alternative download source...${neutral}"
+            if wget -O "xray" "https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/xray-linux-64"; then
+                sudo cp xray /usr/local/bin/xray
+                sudo chmod +x /usr/local/bin/xray
+                
+                # Download geoip and geosite data
+                wget -O geoip.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat" || true
+                wget -O geosite.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat" || true
+                sudo mkdir -p /usr/local/share/xray
+                sudo cp *.dat /usr/local/share/xray/ 2>/dev/null || true
+                
+                echo -e "${green}Xray installed successfully via alternative source${neutral}"
+            else
+                echo -e "${red}All Xray installation methods failed${neutral}"
+                exit 1
+            fi
+        fi
+        
+        # Cleanup
+        cd /
+        rm -rf "$TEMP_DIR"
+    fi
+    
+    # Verify installation
+    if command -v xray >/dev/null 2>&1; then
+        echo -e "${green}Xray installation verified successfully${neutral}"
+        /usr/local/bin/xray version
+    else
+        echo -e "${red}Xray installation verification failed${neutral}"
+        exit 1
+    fi
 else
     echo -e "${green}Xray is already installed, skipping installation${neutral}"
+    /usr/local/bin/xray version
 fi
+
+# ...existing code...
 
 if [ ! -d "/root/.acme.sh" ]; then
     mkdir /root/.acme.sh
@@ -890,7 +991,6 @@ restart="Restart=on-failure
 RestartPreventExitStatus=23"
 wanted_by="WantedBy=multi-user.target"
 after="After=network.target nss-lookup.target"
-# documentation="Documentation=https://t.me/Alrescha79l"
 documentation="Documentation=https://t.me/Alrescha79"
 
 create_service() {
