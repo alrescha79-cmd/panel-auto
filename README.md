@@ -10,6 +10,7 @@
 
 > [!NOTE]  
 > Script ini tidak gratis, Anda dapat mengghubungi saya di [Telegram](https://t.me/Alrescha79) untuk akses lebih lanjut.
+
 > [!CAUTION]
 > Penggunaan skrip ini untuk tujuan ilegal adalah dilarang. Penulis tidak bertanggung jawab atas penyalahgunaan yang dilakukan oleh pengguna.
 
