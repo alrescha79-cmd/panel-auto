@@ -55,7 +55,7 @@ Skrip `uninstall.sh` melakukan hal-hal berikut:
 ### Langkah Cepat
 
 ```bash
-wget -O uninstall.sh https://raw.githubusercontent.com/<owner>/<repo>/main/uninstall.sh
+wget -O uninstall.sh https://raw.githubusercontent.com/alrescha79-cmd/panel-auto/refs/heads/main/uninstall.sh
 chmod +x uninstall.sh
 sudo ./uninstall.sh
 ```
